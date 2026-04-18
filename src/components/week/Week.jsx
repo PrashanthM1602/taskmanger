@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Add, Delete } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import "./week.scss";
 
 import { useQuery, useMutation } from "@apollo/client/react";
