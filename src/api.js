@@ -1,27 +1,52 @@
 // ==============================
-// 🌐 BASE URLs
+// 🌐 BASE URL (PRODUCTION READY)
 // ==============================
 
-// 🔐 Auth server (LOGIN + REGISTER)
-const AUTH_URL = "http://127.0.0.1:8000";
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://taskmanager-backend-quuh.onrender.com";
 
-// 📦 Main backend (PDF, Notes, AI)
-const BASE_URL = "http://127.0.0.1:8000";
+const AUTH_URL = BASE_URL;
 
 // ==============================
-// 🔐 TOKEN HELPER
+// 🔐 TOKEN HELPERS
 // ==============================
+
 const getToken = () => localStorage.getItem("token");
 
-// Common headers with auth
-const getAuthHeaders = () => ({
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${getToken()}`,
-});
+const getAuthHeaders = () => {
+  const token = getToken();
+
+  return {
+    "Content-Type": "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }),
+  };
+};
 
 // ==============================
-// 🔐 REGISTER API (NEW 🔥)
+// 🔧 COMMON FETCH HANDLER
 // ==============================
+
+const handleResponse = async (res) => {
+  let data;
+
+  try {
+    data = await res.json();
+  } catch {
+    throw new Error("Invalid server response");
+  }
+
+  if (!res.ok) {
+    throw new Error(data.detail || "Something went wrong");
+  }
+
+  return data;
+};
+
+// ==============================
+// 🔐 REGISTER
+// ==============================
+
 export const registerUser = async ({ email, password }) => {
   const res = await fetch(`${BASE_URL}/register`, {
     method: "POST",
@@ -31,18 +56,13 @@ export const registerUser = async ({ email, password }) => {
     body: JSON.stringify({ email, password }),
   });
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.detail || "Registration failed");
-  }
-
-  return data;
+  return handleResponse(res);
 };
 
 // ==============================
-// 🔐 LOGIN API
+// 🔐 LOGIN
 // ==============================
+
 export const loginUser = async ({ email, password }) => {
   const res = await fetch(`${AUTH_URL}/login`, {
     method: "POST",
@@ -55,55 +75,52 @@ export const loginUser = async ({ email, password }) => {
     }),
   });
 
-  const data = await res.json();
+  const data = await handleResponse(res);
 
-  if (!res.ok) {
-    throw new Error(data.detail || "Login failed");
-  }
-
-  // ✅ Store token
+  // ✅ Store token safely
   localStorage.setItem("token", data.access_token);
 
   return data;
 };
 
 // ==============================
-// 📤 Upload PDF
+// 📤 UPLOAD PDF
 // ==============================
+
 export const uploadPDF = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
+  const token = getToken();
+
   const res = await fetch(`${BASE_URL}/upload-pdf`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${getToken()}`,
+      ...(token && { Authorization: `Bearer ${token}` }),
     },
     body: formData,
   });
 
-  if (!res.ok) throw new Error("Upload failed");
-
-  return res.json();
+  return handleResponse(res);
 };
 
 // ==============================
-// 📋 Extract Tasks
+// 📋 EXTRACT TASKS
 // ==============================
+
 export const extractTasks = async () => {
   const res = await fetch(`${BASE_URL}/pdf-to-tasks`, {
     headers: getAuthHeaders(),
   });
 
-  if (!res.ok) throw new Error("Failed to fetch AI tasks");
-
-  const data = await res.json();
+  const data = await handleResponse(res);
   return data.ai_task_group;
 };
 
 // ==============================
-// 🧠 Ask PDF
+// 🧠 ASK PDF
 // ==============================
+
 export const askPDF = async ({ question = null, mode = null }) => {
   const res = await fetch(`${BASE_URL}/ask-pdf`, {
     method: "POST",
@@ -111,13 +128,11 @@ export const askPDF = async ({ question = null, mode = null }) => {
     body: JSON.stringify({ question, mode }),
   });
 
-  if (!res.ok) throw new Error("Ask PDF failed");
-
-  return res.json();
+  return handleResponse(res);
 };
 
 // ==============================
-// 📌 NOTES API
+// 📌 NOTES APIs
 // ==============================
 
 export const fetchNotes = async () => {
@@ -125,9 +140,7 @@ export const fetchNotes = async () => {
     headers: getAuthHeaders(),
   });
 
-  if (!res.ok) throw new Error("Failed to fetch notes");
-
-  return res.json();
+  return handleResponse(res);
 };
 
 export const createNote = async (data) => {
@@ -137,9 +150,7 @@ export const createNote = async (data) => {
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Failed to create note");
-
-  return res.json();
+  return handleResponse(res);
 };
 
 export const updateNote = async (id, data) => {
@@ -149,20 +160,18 @@ export const updateNote = async (id, data) => {
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Failed to update note");
-
-  return res.json();
+  return handleResponse(res);
 };
 
 export const deleteNote = async (id) => {
+  const token = getToken();
+
   const res = await fetch(`${BASE_URL}/notes/${id}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${getToken()}`,
+      ...(token && { Authorization: `Bearer ${token}` }),
     },
   });
 
-  if (!res.ok) throw new Error("Failed to delete note");
-
-  return res.json();
+  return handleResponse(res);
 };

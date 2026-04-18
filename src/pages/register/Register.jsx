@@ -3,7 +3,9 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Register.scss";
 import propic from "./propic.jpg";
 
-const AUTH_URL = "http://127.0.0.1:8000";
+const AUTH_URL =
+  process.env.REACT_APP_API_URL ||
+  "https://taskmanager-backend-quuh.onrender.com";
 
 const Register = () => {
   const [formData, setFormData] = useState({

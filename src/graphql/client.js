@@ -1,10 +1,14 @@
 import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 
+const API_URL = process.env.REACT_APP_API_URL
+  ? `${process.env.REACT_APP_API_URL}/graphql`
+  : "https://taskmanager-backend-quuh.onrender.com/graphql";
+
 const link = new HttpLink({
-  uri: "http://127.0.0.1:8000/graphql/", // NO trailing slash
+  uri: API_URL,
 });
 
 export const client = new ApolloClient({
-  link: link,
+  link,
   cache: new InMemoryCache(),
 });
