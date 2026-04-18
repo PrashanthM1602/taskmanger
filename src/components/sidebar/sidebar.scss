@@ -1,0 +1,341 @@
+/* ========================= */
+/* 🌑 SIDEBAR (REFINED PRO) */
+/* ========================= */
+
+.sidebar {
+  flex: 1;
+  min-height: 100vh;
+  padding: 14px 10px;
+
+  background: #0b1220f4;
+  color: #e5e7eb;
+
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ========================= */
+/* 🔝 TOP */
+/* ========================= */
+
+.top {
+  padding: 8px 6px;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #cbd5f5;
+}
+
+/* ========================= */
+/* 🤖 AI BUTTON (PRIMARY FEATURE) */
+/* ========================= */
+
+.top button {
+  margin-top: 14px;
+  width: 100%;
+  padding: 13px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(99,102,241,0.35);
+
+  background: rgba(99,102,241,0.10);
+  color: #c7d2fe;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* subtle elevation on hover */
+.top button:hover {
+  background: rgba(99,102,241,0.18);
+  border-color: rgba(99,102,241,0.6);
+}
+
+/* ========================= */
+/* 📋 MENU */
+/* ========================= */
+
+.center {
+  padding-left: 6px;
+}
+
+.title {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 16px 0 8px;
+  letter-spacing: 1px;
+}
+
+.center ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.center li {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* cleaner hover */
+.center li:hover {
+  background: rgba(148,163,184,0.06);
+}
+
+/* active state (IMPORTANT for professionalism) */
+.center li.active {
+  background: rgba(99,102,241,0.15);
+  border: 1px solid rgba(99,102,241,0.35);
+}
+
+.icon {
+  font-size: 18px;
+  color: #cbd5f5;
+}
+
+.center span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e5e7eb;
+  margin-left: 10px;
+}
+
+/* ========================= */
+/* 🔻 LOGOUT */
+/* ========================= */
+
+.button {
+  padding-left: 6px;
+  margin-top: auto;
+}
+
+.button li {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.button li:hover {
+  background: rgba(239,68,68,0.10);
+  color: #f87171;
+}
+
+/* ========================= */
+/* 🤖 MODAL (CLEAN + DEPTH) */
+/* ========================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  width: 420px;
+  padding: 22px;
+  border-radius: 16px;
+
+  background: #0f172a;
+  color: #e5e7eb;
+
+  border: 1px solid rgba(255,255,255,0.06);
+
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  animation: fadeIn 0.18s ease;
+}
+
+/* HEADER */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-header h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #cbd5f5;
+}
+
+.modal-header span {
+  cursor: pointer;
+  font-size: 18px;
+  color: #94a3b8;
+}
+
+.modal-header span:hover {
+  color: #f87171;
+}
+
+/* ========================= */
+/* 🚀 AI TOOLS (PRO CARDS) */
+/* ========================= */
+
+.tool-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tool {
+  padding: 13px;
+  border-radius: 12px;
+
+  background: #020617;
+  border: 1px solid rgba(255,255,255,0.05);
+
+  color: #e5e7eb;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* hover = soft highlight */
+.tool:hover {
+  background: rgba(99,102,241,0.10);
+  border-color: rgba(99,102,241,0.35);
+}
+
+/* selected tool (VERY IMPORTANT) */
+.tool.active {
+  background: rgba(99,102,241,0.18);
+  border-color: rgba(99,102,241,0.6);
+}
+
+/* ========================= */
+/* ⚡ AI STEP */
+/* ========================= */
+
+.ai-step {
+  text-align: center;
+}
+
+.ai-step p {
+  margin-bottom: 12px;
+  color: #cbd5f5;
+}
+
+.ai-step button {
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+
+  background: #6366f1;
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ai-step button:hover {
+  background: #5453e8;
+}
+
+/* ========================= */
+/* 📊 RESULT */
+/* ========================= */
+
+.ai-result h3 {
+  color: #a78bfa;
+  margin-bottom: 4px;
+}
+
+.ai-result small {
+  color: #94a3b8;
+}
+
+/* ========================= */
+/* 🧾 TASK LIST */
+/* ========================= */
+
+.task-list {
+  margin-top: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.ai-task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  padding: 10px;
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+.ai-task-item:hover {
+  background: rgba(99,102,241,0.06);
+}
+
+/* ========================= */
+/* 💾 SAVE */
+/* ========================= */
+
+.save-btn {
+  margin-top: 14px;
+  width: 100%;
+  padding: 10px;
+
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background: #16a34a;
+}
+
+/* ========================= */
+/* ✨ ANIMATION */
+/* ========================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,362 @@
+.today {
+  flex: 6;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 14px;
+
+  /* 🔥 HEADER */
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #1f2937;
+  }
+
+  /* ========================= */
+  /* 📊 ANALYTICS */
+  /* ========================= */
+  .analytics {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+
+    .card {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #ececec;
+      text-align: center;
+      transition: 0.25s;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+      }
+
+      h4 {
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 4px;
+      }
+
+      p {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+      }
+    }
+  }
+
+  /* ========================= */
+  /* ➕ ADD TASK */
+  /* ========================= */
+  .add-task {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    input {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      outline: none;
+      font-size: 14px;
+      transition: 0.2s;
+
+      &:focus {
+        border-color: #07072b;
+        box-shadow: 0 0 0 3px #1c1faf22;
+      }
+    }
+
+    button {
+      background: #0a0b5a74;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: 0.2s;
+
+      &:hover {
+        background: #0b0664;
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  /* ========================= */
+  /* 📋 TASK ITEM */
+  /* ========================= */
+  .task-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    background: #ffffff;
+    border: 1px solid #ececec;
+    transition: all 0.25s ease;
+
+    &:hover {
+      background: #f9fafb;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    input {
+      width: 18px;
+      height: 18px;
+      accent-color: #4f46e5;
+      cursor: pointer;
+    }
+
+    .task-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #111827;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .date {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 3px;
+      }
+
+      /* ========================= */
+      /* 📈 PROGRESS */
+      /* ========================= */
+      .progress-wrapper {
+        margin-top: 6px;
+
+        .progress-header {
+          display: flex;
+          justify-content: space-between;
+          font-size: 11px;
+          margin-bottom: 4px;
+        }
+
+        .status {
+          font-weight: 600;
+
+          &.completed {
+            color: #22c55e;
+          }
+
+          &.on\ track {
+            color: #6366f1;
+          }
+
+          &.behind {
+            color: #ef4444;
+          }
+        }
+
+        .progress-bar {
+          width: 100%;
+          height: 6px;
+          background: #e5e7eb;
+          border-radius: 20px;
+          overflow: hidden;
+        }
+
+        .progress-fill {
+          height: 100%;
+          border-radius: 20px;
+          transition: width 0.4s ease;
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+        }
+      }
+    }
+
+    .ai-badge {
+      background: #6366f1;
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .subtask-btn {
+      background: #eef2ff;
+      color: #4f46e5;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+
+      &:hover {
+        background: #6366f1;
+        color: white;
+        transform: translateY(-1px);
+      }
+    }
+
+    .delete {
+      color: #c7c7c7;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &:hover {
+        color: #ef4444;
+        transform: scale(1.15);
+      }
+    }
+  }
+
+  /* ========================= */
+  /* 🔥 MODAL */
+  /* ========================= */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+
+  .modal {
+    width: 420px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    animation: modalFade 0.25s ease;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #111827;
+    }
+
+    .modal-task {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      transition: 0.2s ease;
+
+      &:hover {
+        background: #f9fafb;
+      }
+
+      input {
+        margin-top: 4px;
+        width: 16px;
+        height: 16px;
+        accent-color: #4f46e5;
+      }
+
+      .modal-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        span {
+          font-size: 14px;
+          font-weight: 500;
+          color: #1f2937;
+        }
+
+        small {
+          font-size: 12px;
+          color: #9ca3af;
+          margin-top: 2px;
+        }
+      }
+
+      .delete {
+        color: #c7c7c7;
+
+        &:hover {
+          color: #ef4444;
+        }
+      }
+    }
+
+    button {
+      margin-top: 14px;
+      width: 100%;
+      padding: 9px;
+      border: none;
+      border-radius: 8px;
+      background: #f3f4f6;
+      cursor: pointer;
+      font-weight: 500;
+
+      &:hover {
+        background: #e5e7eb;
+      }
+    }
+  }
+
+  @keyframes modalFade {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 18px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header span {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-footer {
+  padding: 12px;
+  border-top: 1px solid #eee;
+}
+
+.modal-footer button {
+  width: 100%;
+}
