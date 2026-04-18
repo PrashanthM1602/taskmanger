@@ -1,7 +1,6 @@
 import React from 'react'
 import propic from './propic.jpg'
-import {Link} from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './Welcome.scss'
 
 const Welcome = () => {
@@ -25,20 +24,22 @@ const Welcome = () => {
             and boost your productivity
           </p>
 
-          <button className="btn">
-            <Link to='./register' style={{textDecoration:'none', color :'black'}}>
-               Get Started
-           </Link>
-          </button>
+          {/* ✅ FIXED BUTTON */}
+          <Link to="/register" style={{ textDecoration: 'none' }}>
+            <button className="btn">
+              Get Started
+            </button>
+          </Link>
 
           <p>
             Already have an account?
-            <span style={{
-              color:'#007bff',
-              cursor:'pointer',
-              textDecoration:'none',
-            }}>
-              <Link to ='/login' style={{textDecoration:'none'}}>
+            <span
+              style={{
+                color: '#007bff',
+                cursor: 'pointer',
+              }}
+            >
+              <Link to="/login" style={{ textDecoration: 'none' }}>
                 Login
               </Link>
             </span>
