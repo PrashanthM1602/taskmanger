@@ -1,4 +1,4 @@
-s// ==============================
+// ==============================
 // 🌐 BASE URL (PRODUCTION READY)
 // ==============================
 
@@ -108,11 +108,11 @@ export const uploadPDF = async (file) => {
 // 📋 GENERATE AI TASKS (FIXED)
 // ==============================
 
-export const extractTasks = async () => {
+export const extractTasks = async (pdfId) => {
   const token = getToken();
 
-  const res = await fetch(`${BASE_URL}/generate-ai-tasks`, {
-    method: "POST", // ✅ Correct
+  const res = await fetch(`${BASE_URL}/generate-ai-tasks/${pdfId}`, {
+    method: "POST",
     headers: {
       ...(token && { Authorization: `Bearer ${token}` }),
     },

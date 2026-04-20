@@ -10,9 +10,14 @@ const AiToolsModal = ({ onClose, openAssistant }) => {
   const [uploaded, setUploaded] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [preview, setPreview] = useState(null); // 🔥 KEY STATE
+  const [preview, setPreview] = useState(null);
 
-  const { refetch } = useQuery(GET_TASKS);
+  // 🔥 NEW: store uploaded PDF ID
+  const [pdfId, setPdfId] = useState(null);
+
+  const { refetch } = useQuery(GET_TASKS, {
+    fetchPolicy: "network-only", // 🔥 important
+  });
 
   // =========================
   // 📤 UPLOAD PDF
@@ -21,12 +26,19 @@ const AiToolsModal = ({ onClose, openAssistant }) => {
     if (!file) return alert("Select a PDF first");
 
     setLoading(true);
+
     try {
-      await uploadPDF(file);
+      const res = await uploadPDF(file);
+
+      // 🔥 STORE PDF ID
+      setPdfId(res.pdf_id);
+
       setUploaded(true);
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Upload failed");
     }
+
     setLoading(false);
   };
 
@@ -34,20 +46,26 @@ const AiToolsModal = ({ onClose, openAssistant }) => {
   // 🔥 GENERATE + FETCH REAL TASKS
   // =========================
   const handleGenerateTasks = async () => {
+    if (!pdfId) {
+      alert("PDF not found. Please upload again.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      // Step 1: generate (backend saves)
-      await extractTasks();
+      // 🔥 PASS PDF ID (CRITICAL FIX)
+      await extractTasks(pdfId);
 
       // 🔥 wait for DB commit
       await new Promise((res) => setTimeout(res, 500));
 
+      // 🔥 fetch updated tasks
       const { data } = await refetch();
 
       const tasks = data?.tasks || [];
 
-      // Step 3: find latest AI task group
+      // 🔥 find latest AI parent task
       const latestAI = [...tasks]
         .reverse()
         .find((t) => t.parentId === null && t.subtasks?.length > 0);
@@ -57,7 +75,7 @@ const AiToolsModal = ({ onClose, openAssistant }) => {
         return;
       }
 
-      setPreview(latestAI); // 🔥 SHOW PREVIEW
+      setPreview(latestAI);
 
     } catch (err) {
       console.error(err);
@@ -120,6 +138,7 @@ const AiToolsModal = ({ onClose, openAssistant }) => {
           </div>
         ) : !uploaded ? (
           <div className="upload-section">
+
             <input
               type="file"
               accept="application/pdf"
@@ -129,6 +148,7 @@ const AiToolsModal = ({ onClose, openAssistant }) => {
             <button onClick={handleUpload}>
               {loading ? "Uploading..." : "Upload PDF"}
             </button>
+
           </div>
         ) : (
           <div className="action-section">
