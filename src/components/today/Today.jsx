@@ -278,11 +278,24 @@ const Today = () => {
 
             <input
               type="checkbox"
-              checked={sub.status === "completed"}
-              onChange={() =>
-                completeTask({ variables: { taskId: sub.id } })
+                checked={
+               checkedMap[sub.id] !== undefined
+                ? checkedMap[sub.id]
+                : sub.status === "completed"
               }
-            />
+              onChange={() => {
+              // instant UI update
+              setCheckedMap((prev) => ({
+              ...prev,
+              [sub.id]: !(
+              checkedMap[sub.id] ?? sub.status === "completed"
+              ),
+              }));
+
+            // backend call
+            completeTask({ variables: { taskId: sub.id } });
+            }}
+          />
 
             <div className="modal-content">
               <span>{sub.title}</span>
