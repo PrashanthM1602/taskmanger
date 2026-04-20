@@ -16,6 +16,7 @@ const Today = () => {
   const [title, setTitle] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [openTask, setOpenTask] = useState(null);
+  const [checkedMap, setCheckedMap] = useState({});
 
   const [createTask] = useMutation(CREATE_TASK, {
     refetchQueries: [{ query: GET_TASKS }],
