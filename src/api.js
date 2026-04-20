@@ -1,4 +1,4 @@
-// ==============================
+s// ==============================
 // 🌐 BASE URL (PRODUCTION READY)
 // ==============================
 
@@ -14,11 +14,11 @@ const AUTH_URL = BASE_URL;
 
 const getToken = () => localStorage.getItem("token");
 
-const getAuthHeaders = () => {
+const getAuthHeaders = (isJSON = true) => {
   const token = getToken();
 
   return {
-    "Content-Type": "application/json",
+    ...(isJSON && { "Content-Type": "application/json" }),
     ...(token && { Authorization: `Bearer ${token}` }),
   };
 };
@@ -37,7 +37,8 @@ const handleResponse = async (res) => {
   }
 
   if (!res.ok) {
-    throw new Error(data.detail || "Something went wrong");
+    console.error("❌ API ERROR:", res.status, data);
+    throw new Error(data.detail || data.error || "Something went wrong");
   }
 
   return data;
@@ -50,9 +51,7 @@ const handleResponse = async (res) => {
 export const registerUser = async ({ email, password }) => {
   const res = await fetch(`${BASE_URL}/register`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getAuthHeaders(true),
     body: JSON.stringify({ email, password }),
   });
 
@@ -77,7 +76,7 @@ export const loginUser = async ({ email, password }) => {
 
   const data = await handleResponse(res);
 
-  // ✅ Store token safely
+  // ✅ Store token
   localStorage.setItem("token", data.access_token);
 
   return data;
@@ -97,6 +96,7 @@ export const uploadPDF = async (file) => {
     method: "POST",
     headers: {
       ...(token && { Authorization: `Bearer ${token}` }),
+      // ❌ DO NOT set Content-Type manually for FormData
     },
     body: formData,
   });
@@ -105,16 +105,20 @@ export const uploadPDF = async (file) => {
 };
 
 // ==============================
-// 📋 EXTRACT TASKS
+// 📋 GENERATE AI TASKS (FIXED)
 // ==============================
 
 export const extractTasks = async () => {
-  const res = await fetch(`${BASE_URL}/pdf-to-tasks`, {
-    headers: getAuthHeaders(),
+  const token = getToken();
+
+  const res = await fetch(`${BASE_URL}/generate-ai-tasks`, {
+    method: "POST", // ✅ Correct
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
   });
 
-  const data = await handleResponse(res);
-  return data.ai_task_group;
+  return handleResponse(res);
 };
 
 // ==============================
@@ -124,7 +128,7 @@ export const extractTasks = async () => {
 export const askPDF = async ({ question = null, mode = null }) => {
   const res = await fetch(`${BASE_URL}/ask-pdf`, {
     method: "POST",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(true),
     body: JSON.stringify({ question, mode }),
   });
 
@@ -137,7 +141,7 @@ export const askPDF = async ({ question = null, mode = null }) => {
 
 export const fetchNotes = async () => {
   const res = await fetch(`${BASE_URL}/notes`, {
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(false),
   });
 
   return handleResponse(res);
@@ -146,7 +150,7 @@ export const fetchNotes = async () => {
 export const createNote = async (data) => {
   const res = await fetch(`${BASE_URL}/notes`, {
     method: "POST",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(true),
     body: JSON.stringify(data),
   });
 
@@ -156,7 +160,7 @@ export const createNote = async (data) => {
 export const updateNote = async (id, data) => {
   const res = await fetch(`${BASE_URL}/notes/${id}`, {
     method: "PUT",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(true),
     body: JSON.stringify(data),
   });
 
@@ -175,3 +179,4 @@ export const deleteNote = async (id) => {
 
   return handleResponse(res);
 };
+

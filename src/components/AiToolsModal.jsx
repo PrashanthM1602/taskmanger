@@ -40,7 +40,9 @@ const AiToolsModal = ({ onClose, openAssistant }) => {
       // Step 1: generate (backend saves)
       await extractTasks();
 
-      // Step 2: fetch latest tasks
+      // 🔥 wait for DB commit
+      await new Promise((res) => setTimeout(res, 500));
+
       const { data } = await refetch();
 
       const tasks = data?.tasks || [];
