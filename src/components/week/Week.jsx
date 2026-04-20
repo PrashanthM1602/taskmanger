@@ -10,6 +10,7 @@ const Week = () => {
   const { data, loading, error } = useQuery(GET_TASKS);
 
   const [openTask, setOpenTask] = useState(null);
+  const [checkedMap, setCheckedMap] = useState({});
 
   const [completeTask] = useMutation(COMPLETE_TASK, {
     refetchQueries: [{ query: GET_TASKS }],
@@ -134,12 +135,23 @@ const Week = () => {
               <div key={sub.id} className="modal-task">
 
                 <input
-                  type="checkbox"
-                  checked={sub.status === "completed"}
-                  onChange={() =>
-                    completeTask({ variables: { taskId: sub.id } })
-                  }
-                />
+  type="checkbox"
+  checked={
+    checkedMap[sub.id] !== undefined
+      ? checkedMap[sub.id]
+      : sub.status === "completed"
+  }
+  onChange={() => {
+    setCheckedMap((prev) => ({
+      ...prev,
+      [sub.id]: !(
+        checkedMap[sub.id] ?? sub.status === "completed"
+      ),
+    }));
+
+    completeTask({ variables: { taskId: sub.id } });
+  }}
+/>
 
                 <div className="modal-content">
                   <span>{sub.title}</span>
